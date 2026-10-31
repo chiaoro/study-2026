@@ -184,6 +184,9 @@ const ITEMS=[
   {id:"chi-write",stage:"extra",step:"練生字",tip:"把六課生字親手寫一遍，錯字再挑戰",s:"chi",title:"國語生字手寫練習",url:"https://grade6-chinese-handwriting-2026.surry318.chatgpt.site/",src:"ChatGPT",
    units:[["生字","第一～六課共 101 字：看注音，用手指或觸控筆在田字格寫"],["模式","基礎描紅、生字手寫挑戰、進階挑戰、錯字再挑戰"]],
    tags:["田字格手寫","可選課次","錯字複習","可匯出紀錄"]},
+  {id:"chi-hanzi",stage:"extra",step:"練生字",tip:"把六課生字親手寫一遍，錯字再挑戰",s:"chi",title:"國語生字手寫本",url:"https://claude.ai/artifact/2onPR4FFZQ3oJFGBWgahpp",src:"Claude",
+   units:[["生字","第一～六課共 108 字：看注音和語詞，用手指或觸控筆在田字格寫"],["模式","每次隨機抽 30 字、分課練習、錯字本、一口氣寫全部"]],
+   tags:["田字格手寫","隨機 30 字","描紅提示","錯字本","家長檢查"]},
   {id:"chi-sheet",stage:"extra",step:"寫測驗券",tip:"照考試的樣子寫，交卷後自動批改",s:"chi",title:"國語測驗券",url:"https://claude.ai/artifact/Gp5iBpH5HSb2P7772x8DLZ",src:"Claude",
    units:[["單元評量","第 7 回第五課、第 8 回第六課"],["段考評量","第 6 回三次成績考查①、第 9 回複習二、第 10 回二次成績考查①"]],
    tags:["共 5 回","寫國字・注音改點選","交卷自動批改","錯題訂正教學","寫作題家長批改"]},
@@ -282,12 +285,16 @@ function render(){
   const keys=Object.keys(SUBJECTS).filter(k=>filter==="all"||filter===k);
   document.getElementById("list").innerHTML=keys.map(k=>{
     const all=bySubject(k),nx=nextOf(k);
-    // 加強練習的每一項各自成為一步，其他階段同一步放在一起
+    // 加強練習的每一項各自成為一步（相鄰且同名的放同一步），其他階段同一步放在一起
     const steps=[];
     Object.keys(STAGES).forEach(st=>{
       const its=all.filter(i=>i.stage===st);
       if(!its.length) return;
-      if(st==="extra") its.forEach(i=>steps.push({label:i.step||STAGES.extra.label,tip:i.tip||STAGES.extra.tip,its:[i]}));
+      if(st==="extra") its.forEach(i=>{
+        const prev=steps[steps.length-1];
+        if(i.step&&prev&&prev.label===i.step) prev.its.push(i);
+        else steps.push({label:i.step||STAGES.extra.label,tip:i.tip||STAGES.extra.tip,its:[i]});
+      });
       else steps.push({label:STAGES[st].label,tip:STAGES[st].tip,its});
     });
     return `<section class="subject ${k}" id="s-${k}">
