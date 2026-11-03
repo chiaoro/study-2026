@@ -192,6 +192,8 @@ const ITEMS=[
   {id:"chi-sheet",stage:"extra",step:"寫測驗券",tip:"照考試的樣子寫，交卷後自動批改",s:"chi",title:"國語測驗券",url:"https://claude.ai/artifact/Gp5iBpH5HSb2P7772x8DLZ",src:"Claude",
    units:[["單元評量","第 7 回第五課、第 8 回第六課"],["段考評量","第 6 回三次成績考查①、第 9 回複習二、第 10 回二次成績考查①"]],
    tags:["共 5 回","寫國字・注音改點選","交卷自動批改","錯題訂正教學","寫作題家長批改"]},
+  {id:"chi-worksheet",stage:"extra",step:"寫測驗券",tip:"照考試的樣子寫，交卷後自動批改",s:"chi",title:"國語測驗券互動練習",url:"https://grade6-chinese-worksheet-2026.surry318.chatgpt.site/",src:"ChatGPT",
+   units:[["內容","國語測驗券互動練習"]],tags:[]},
   {id:"chi-reading",stage:"extra",step:"閱讀理解再挑戰",tip:"換一份題目，檢查讀懂了沒",s:"chi",title:"國語閱讀探險",url:"https://grade6-chinese-midterm-quiz-2026.surry318.chatgpt.site/",src:"ChatGPT",
    units:[["一般版","六課各 5 題：課文內容、語詞與基礎理解"],["進階版","六課各 5 題：推論、情境應用與閱讀判斷"]],
    tags:["一般版 30 題","進階版 30 題","錯題集中複習"]},
@@ -263,7 +265,7 @@ const KEY="hub-done-r2"; // 2026-11-03 題庫全面更新：練習紀錄歸零�
 let done={};try{const cur=localStorage.getItem(KEY);if(cur)done=JSON.parse(cur)||{};else{const old=JSON.parse(localStorage.getItem("hub-done"))||{};ITEMS.forEach(i=>{if(i.stage==="note"&&old[i.id])done[i.id]=true})}}catch(e){}
 function saveDone(){try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}}
 // 題目版本：讓孩子一眼看出哪些題目是新的（new:true 才是這次換過的）
-const VER={"chi-new":["全新版 1103",1],"sci-new":["全新版 1103",1],"hea-new":["全新版 1103",1],"soc-new":["全新版 1103",1],"eng-new":["全新版 1103",1],
+const VER={"chi-worksheet":["全新C版 1103",1],"chi-new":["全新版 1103",1],"sci-new":["全新版 1103",1],"hea-new":["全新版 1103",1],"soc-new":["全新版 1103",1],"eng-new":["全新版 1103",1],
 "chi-write":["全新C版 1103",1],"chi-reading":["全新C版 1103",1],"sci-v2":["全新C版 1103",1],"hea-env":["全新C版 1103",1],"hea-life":["全新C版 1103",1],"soc-learn":["全新C版 1103",1],"soc-v2":["全新C版 1103",1],"eng-quest":["全新C版 1103",1],
 "chi-mock":["舊題 1102 版",0],"sci-mid":["舊題 1102 版",0],"hea-mid":["舊題 1102 版",0],"soc-12":["舊題 1102 版",0],"eng-mid":["舊題 1102 版",0],
 "chi-sheet":["舊題 1031 版",0],"sci-sheet":["舊題 1031 版",0],"soc-sheet":["舊題 1031 版",0]};
