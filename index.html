@@ -257,8 +257,8 @@ const ITEMS=[
 ];
 
 // 打勾紀錄存在這臺平板的瀏覽器裡（同一個瀏覽器、同一個網址打開就會一直在）
-const KEY="hub-done";
-let done={};try{done=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){}
+const KEY="hub-done-r2"; // 2026-11-03 題庫全面更新：練習紀錄歸零，筆記已讀保留
+let done={};try{const cur=localStorage.getItem(KEY);if(cur)done=JSON.parse(cur)||{};else{const old=JSON.parse(localStorage.getItem("hub-done"))||{};ITEMS.forEach(i=>{if(i.stage==="note"&&old[i.id])done[i.id]=true})}}catch(e){}
 function saveDone(){try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const bySubject=k=>ITEMS.filter(i=>i.s===k);
