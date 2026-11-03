@@ -103,9 +103,11 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--next);outline-offse
 .item.is-done h3,.item.is-done .units{opacity:.6}
 .item-top{display:flex;justify-content:space-between;gap:6px 10px;align-items:flex-start;flex-wrap:wrap-reverse}
 .item h3{font-size:21px}
-.badges{display:flex;gap:6px;flex:none}
+.badges{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
 .badge{font-size:12px;font-weight:700;padding:2px 10px;border-radius:999px;white-space:nowrap}
 .badge.src{background:var(--cs);color:var(--c)}
+.badge.ver{border:1px solid var(--line);color:var(--muted)}
+.badge.ver.new{background:var(--next-soft);border-color:var(--next);color:var(--ink)}
 .badge.next{background:var(--next);color:var(--card)}
 .units{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:3px;font-size:15px}
 .units li{display:grid;grid-template-columns:4.6em minmax(0,1fr);gap:8px}
@@ -260,6 +262,11 @@ const ITEMS=[
 const KEY="hub-done-r2"; // 2026-11-03 題庫全面更新：練習紀錄歸零，筆記已讀保留
 let done={};try{const cur=localStorage.getItem(KEY);if(cur)done=JSON.parse(cur)||{};else{const old=JSON.parse(localStorage.getItem("hub-done"))||{};ITEMS.forEach(i=>{if(i.stage==="note"&&old[i.id])done[i.id]=true})}}catch(e){}
 function saveDone(){try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}}
+// 題目版本：讓孩子一眼看出哪些題目是新的（new:true 才是這次換過的）
+const VER={"chi-new":["全新版 1103",1],"sci-new":["全新版 1103",1],"hea-new":["全新版 1103",1],"soc-new":["全新版 1103",1],"eng-new":["全新版 1103",1],
+"chi-write":["全新C版 1103",1],"chi-reading":["全新C版 1103",1],"sci-v2":["全新C版 1103",1],"hea-env":["全新C版 1103",1],"hea-life":["全新C版 1103",1],"soc-learn":["全新C版 1103",1],"soc-v2":["全新C版 1103",1],"eng-quest":["全新C版 1103",1],
+"chi-mock":["舊題 1102 版",0],"sci-mid":["舊題 1102 版",0],"hea-mid":["舊題 1102 版",0],"soc-12":["舊題 1102 版",0],"eng-mid":["舊題 1102 版",0],
+"chi-sheet":["舊題 1031 版",0],"sci-sheet":["舊題 1031 版",0],"soc-sheet":["舊題 1031 版",0]};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const bySubject=k=>ITEMS.filter(i=>i.s===k);
 const nextOf=k=>bySubject(k).find(i=>!done[i.id]);
@@ -284,7 +291,7 @@ function itemHTML(it,isNext){
   const d=!!done[it.id],note=it.stage==="note";
   return `<article class="item${isNext?" is-next":""}${d?" is-done":""}">
     <div class="item-top"><h3>${esc(it.title)}</h3>
-      <div class="badges">${isNext?`<span class="badge next">下一步</span>`:""}<span class="badge src">${it.src}</span></div></div>
+      <div class="badges">${isNext?`<span class="badge next">下一步</span>`:""}${VER[it.id]?`<span class="badge ver${VER[it.id][1]?" new":""}">${VER[it.id][0]}</span>`:""}<span class="badge src">${it.src}</span></div></div>
     <ul class="units">${it.units.map(u=>`<li><b>${esc(u[0])}</b><span>${esc(u[1])}</span></li>`).join("")}</ul>
     ${it.tags.length?`<div class="chips">${it.tags.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div>`:""}
     ${it.note?`<p class="note">${esc(it.note)}</p>`:""}
