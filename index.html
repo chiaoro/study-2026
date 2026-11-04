@@ -240,6 +240,9 @@ const ITEMS=[
   {id:"eng-mid",stage:"quiz",s:"eng",title:"六上英文期中闖關",url:"https://claude.ai/artifact/9JwW1ukXyDzXKU4R7v5mXF",src:"Claude",
    units:[["Unit 1","Whale Watching"],["Unit 2","Having a Cold"]],
    tags:["一般版 36 題","進階版 36 題","可選題數","填空・句子重組・閱讀","錯題重練"]},
+  {id:"eng-vocab35",stage:"extra",step:"背期中單字",tip:"考試範圍 1–35，拼到全對再打勾",s:"eng",title:"六上期中單字 1–35",url:"https://chiaoro.github.io/study-2026/vocab35.html",src:"Claude",
+   units:[["範圍","月份 1–12、數字 13–27、形容詞 28–35"],["題型","看中文拼英文、看英文選中文、聽發音拼字"]],
+   tags:["可分段練","月份大寫檢查","錯題本","點單字聽發音"]},
   {id:"eng-quest",stage:"extra",s:"eng",title:"English Quest",url:"https://grade6-english-midterm-quiz-2026.surry318.chatgpt.site/",src:"ChatGPT",
    units:[["Unit 1","Whale Watching"],["Unit 2","Having a Cold"]],
    tags:["一般版","進階版","預設 50 題","單字・文法・對話・閱讀","中文解析"]},
@@ -265,7 +268,7 @@ const KEY="hub-done-r2"; // 2026-11-03 題庫全面更新：練習紀錄歸零�
 let done={};try{const cur=localStorage.getItem(KEY);if(cur)done=JSON.parse(cur)||{};else{const old=JSON.parse(localStorage.getItem("hub-done"))||{};ITEMS.forEach(i=>{if(i.stage==="note"&&old[i.id])done[i.id]=true})}}catch(e){}
 function saveDone(){try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}}
 // 題目版本：讓孩子一眼看出哪些題目是新的（new:true 才是這次換過的）
-const VER={"chi-worksheet":["全新C版 1103",1],"chi-new":["全新版 1103",1],"sci-new":["全新版 1103",1],"hea-new":["全新版 1103",1],"soc-new":["全新版 1103",1],"eng-new":["全新版 1103",1],
+const VER={"eng-vocab35":["新增 1104",1],"chi-worksheet":["全新C版 1103",1],"chi-new":["全新版 1103",1],"sci-new":["全新版 1103",1],"hea-new":["全新版 1103",1],"soc-new":["全新版 1103",1],"eng-new":["全新版 1103",1],
 "chi-write":["全新C版 1103",1],"chi-reading":["全新C版 1103",1],"sci-v2":["全新C版 1103",1],"hea-env":["全新C版 1103",1],"hea-life":["全新C版 1103",1],"soc-learn":["全新C版 1103",1],"soc-v2":["全新C版 1103",1],"eng-quest":["全新C版 1103",1],
 "chi-mock":["舊題 1102 版",0],"sci-mid":["舊題 1102 版",0],"hea-mid":["舊題 1102 版",0],"soc-12":["舊題 1102 版",0],"eng-mid":["舊題 1102 版",0],
 "chi-sheet":["舊題 1031 版",0],"sci-sheet":["舊題 1031 版",0],"soc-sheet":["舊題 1031 版",0]};
