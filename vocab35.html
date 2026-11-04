@@ -72,7 +72,7 @@ input[type=text]{width:100%;font-family:var(--en);font-size:1.6rem;padding:10px 
 .speak svg{width:18px;height:18px}
 .center{display:flex;justify-content:center}
 
-/* 單字表 */
+/* 成績頁的錯字表 */
 table{width:100%;border-collapse:collapse}
 td{padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
 td.n{color:var(--muted);width:2.2em;font-variant-numeric:tabular-nums;font-family:var(--en);font-size:.9rem}
@@ -80,7 +80,6 @@ td.w{font-family:var(--en);font-weight:600;font-size:1.1rem}
 td.s{width:44px;text-align:right}
 .icon{border:none;background:transparent;color:var(--blue);cursor:pointer;padding:4px}
 .icon svg{width:20px;height:20px}
-tr.miss td.w{color:var(--red)}
 .score{font-family:var(--en);font-size:3rem;font-weight:700;color:var(--blue);line-height:1;font-variant-numeric:tabular-nums}
 .stamp{display:inline-block;border:3px solid var(--red);color:var(--red);border-radius:8px;padding:2px 10px;font-weight:700;transform:rotate(-6deg)}
 .stamp.good{border-color:var(--green);color:var(--green)}
@@ -109,8 +108,6 @@ tr.miss td.w{color:var(--red)}
     <div class="row">
       <button class="btn" id="startBtn">開始測驗</button>
       <button class="btn ghost" id="wrongBtn">只練錯題本</button>
-      <span class="spacer"></span>
-      <button class="btn ghost" id="listBtn">看單字表</button>
     </div>
     <p class="note" id="wrongNote"></p>
   </section>
@@ -144,11 +141,6 @@ tr.miss td.w{color:var(--red)}
     </div>
   </section>
 
-  <!-- 單字表 -->
-  <section id="list" class="wrap" style="gap:12px" hidden>
-    <div class="row"><button class="btn ghost" id="backBtn">回首頁</button><span class="spacer"></span><span class="note">點喇叭可以聽發音，紅字是錯題本裡的字</span></div>
-    <div class="card"><table><tbody id="listBody"></tbody></table></div>
-  </section>
 </div>
 
 <script>
@@ -197,13 +189,13 @@ function speak(t){
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-function show(sec){['home','quiz','result','list'].forEach(s=>$(s).hidden=s!==sec);window.scrollTo(0,0)}
+function show(sec){['home','quiz','result'].forEach(s=>$(s).hidden=s!==sec);window.scrollTo(0,0)}
 
 function renderHome(){
   $('ranges').innerHTML=RANGES.map(r=>`<button class="chip" aria-pressed="${r.id===range}" data-r="${r.id}">${r.name}</button>`).join('');
   $('modes').innerHTML=MODES.map(m=>`<button class="mode" aria-pressed="${m.id===mode}" data-m="${m.id}"><b>${m.name}</b><small>${m.tip}</small></button>`).join('');
   $('wrongBtn').disabled=!book.length;
-  $('wrongNote').textContent=book.length?`錯題本裡有 ${book.length} 個字：${book.map(n=>WORDS[n-1].en).join('、')}`:'錯題本目前是空的，答錯的字會自動收進來，答對兩次就會移出。';
+  $('wrongNote').textContent=book.length?`錯題本裡有 ${book.length} 個字，按「只練錯題本」再挑戰。`:'錯題本目前是空的，答錯的字會自動收進來，答對兩次就會移出。';
 }
 $('ranges').onclick=e=>{const b=e.target.closest('[data-r]');if(b){range=b.dataset.r;renderHome()}};
 $('modes').onclick=e=>{const b=e.target.closest('[data-m]');if(b){mode=b.dataset.m;renderHome()}};
@@ -308,7 +300,7 @@ function showResult(){
   const total=queue.length;
   $('rScore').textContent=`${right} / ${total}`;
   const pct=total?right/total:0;
-  $('rMsg').innerHTML=pct===1?'<span class="stamp good">全對 · 可以簽章</span>':pct>=.8?'很接近了！把下面的字再練一次。':'先看單字表複習，再練錯的字。';
+  $('rMsg').innerHTML=pct===1?'<span class="stamp good">全對 · 可以簽章</span>':pct>=.8?'很接近了！把下面的字再練一次。':'把下面的字多看幾次，再練一次錯的。';
   $('rWrongCard').hidden=!missed.length;
   $('retryWrong').hidden=!missed.length;
   $('rWrong').innerHTML=missed.map(w=>`<tr><td class="n">${w.no}</td><td class="w">${w.en}</td><td>${w.zh}</td><td class="s"><button class="icon" data-say="${w.en}" aria-label="聽 ${w.en}">${SPK}</button></td></tr>`).join('');
@@ -317,11 +309,6 @@ function showResult(){
 $('retryWrong').onclick=()=>start(missed.slice());
 $('homeBtn').onclick=()=>{renderHome();show('home')};
 
-function renderList(){
-  $('listBody').innerHTML=WORDS.map(w=>`<tr class="${book.includes(w.no)?'miss':''}"><td class="n">${w.no}</td><td class="w">${w.en}</td><td>${w.zh}</td><td class="s"><button class="icon" data-say="${w.en}" aria-label="聽 ${w.en}">${SPK}</button></td></tr>`).join('');
-}
-$('listBtn').onclick=()=>{renderList();show('list')};
-$('backBtn').onclick=()=>{renderHome();show('home')};
 document.addEventListener('click',e=>{const b=e.target.closest('[data-say]');if(b)speak(b.dataset.say)});
 
 renderHome();
