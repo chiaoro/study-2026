@@ -269,7 +269,7 @@ let done={};try{const cur=localStorage.getItem(KEY);if(cur)done=JSON.parse(cur)|
 function saveDone(){try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}}
 // 題目版本：讓孩子一眼看出哪些題目是新的（new:true 才是這次換過的）
 const VER={"eng-vocab35":["新增 1104",1],"chi-worksheet":["全新C版 1103",1],"chi-new":["全新版 1103",1],"sci-new":["全新版 1103",1],"hea-new":["全新版 1103",1],"soc-new":["全新版 1103",1],"eng-new":["全新版 1103",1],
-"chi-write":["全新C版 1103",1],"chi-reading":["全新C版 1103",1],"sci-v2":["全新C版 1103",1],"hea-env":["全新C版 1103",1],"hea-life":["全新C版 1103",1],"soc-learn":["全新C版 1103",1],"soc-v2":["全新C版 1103",1],"eng-quest":["全新C版 1103",1],
+"chi-write":["全新C版 1103",1],"chi-reading":["全新C版 1103",1],"sci-v2":["全新C版 1103",1],"hea-env":["全新 1105 版",1],"hea-life":["全新 1105 版",1],"soc-learn":["全新 1105 版",1],"soc-v2":["全新 1105 版",1],"eng-quest":["全新C版 1103",1],
 "chi-mock":["舊題 1102 版",0],"sci-mid":["舊題 1102 版",0],"hea-mid":["全新版 1105 版",1],"soc-12":["全新版 1105 版",1],"eng-mid":["舊題 1102 版",0],
 "chi-sheet":["舊題 1031 版",0],"sci-sheet":["舊題 1031 版",0],"soc-sheet":["舊題 1031 版",0]};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
