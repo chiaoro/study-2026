@@ -1,12 +1,12 @@
-# 六上期中複習總覽
+# 六年級複習站
 
 ## 專案用途
 
-孩子的期中複習入口頁，依科目列出各複習網站與練習步驟，可打勾記錄進度（存在瀏覽器）。另有 `vocab35.html` 英文期中單字 1–35 練習。
+孩子的複習入口。`index.html` 選擇複習階段；`midterm.html` 六上期中、`final.html` 六上期末，各自依科目列出複習網站與練習步驟，可打勾記錄進度（存在瀏覽器，期中 key `hub-done-r2`、期末 `final-done-r1`）。另有 `vocab35.html` 英文期中單字 1–35 練習。
 
 ## 執行方式
 
-- 入口：`index.html`，直接用瀏覽器開啟。
+- 入口：`index.html`（階段選擇），直接用瀏覽器開啟。新增階段時複製 `final.html` 改資料，並在 `index.html` 加一張卡。
 - 線上版：GitHub Pages https://chiaoro.github.io/study-2026/ ，push 到 `main` 後自動更新。
 
 ## 注意
