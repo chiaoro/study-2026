@@ -172,7 +172,7 @@ const SUBJECTS={
   sci:{name:"自然",sub:"範圍待補"},
   hea:{name:"健康",sub:"範圍待補"},
   soc:{name:"社會",sub:"範圍待補"},
-  eng:{name:"英文",sub:"課本第3、4課"}
+  eng:{name:"英文",sub:"Unit 3 From Farm to Table、Unit 4 A Call in the Morning"}
 };
 const STAGES={
   note:{n:"1",label:"讀重點筆記",tip:"先把觀念讀熟，注意易錯提醒和口訣"},
@@ -185,14 +185,20 @@ const ITEMS=[
    tags:["生字遮住練習","易錯字與多音字","常考重點","46 題小測驗"]},
   {id:"chi-write",stage:"extra",step:"練生字",tip:"先練習，考前做一次最終測驗請家長批改",s:"chi",title:"國語生字手寫本",url:"https://chiaoro.github.io/chinese-handwriting/",src:"Claude",
    units:[["生字","第七～十二課共 109 字（也可切換期中第一～六課）：看注音和語詞，在田字格手寫"],["練習","每次隨機抽 30 字；一般、描紅、進階限時三種方式；錯字本可連寫三次"],["測驗","最終測驗抽 30 字不給提示，家長批改算 100 分"]],
-   tags:["田字格手寫","對照課本字","錯字本","家長檢查","最終測驗"]}];
+   tags:["田字格手寫","對照課本字","錯字本","家長檢查","最終測驗"]},
+  {id:"eng-notes",stage:"note",s:"eng",title:"六上英文期末複習",url:"https://claude.ai/artifact/SWR9wVjCRRSYGuaNdMoMFc",src:"Claude",
+   units:[["Unit 3","From Farm to Table：點餐句型、some 的用法、做披薩步驟、oi / oy"],["Unit 4","A Call in the Morning：一天作息、What time…? / Do you…?、gets / has、ou / ow"]],
+   tags:["故事中英對照","句型泡泡","文法整理","20 題小測驗"]},
+  {id:"eng-vocab",stage:"extra",step:"背期末單字",tip:"先練「考試重點」，拼到全對再打勾",s:"eng",title:"六上英文期末單字",url:"https://chiaoro.github.io/study-2026/vocab-final.html",src:"Claude",
+   units:[["範圍","Unit 3 食物、Unit 4 每天作息，加課文單字和發音字，共 63 個"],["練法","看中文拼英文、看英文選中文、聽發音拼字；錯的自動收進錯題本"]],
+   tags:["考試重點 22 字","聽發音","錯題本"]}];
 
 // 打勾紀錄存在這臺平板的瀏覽器裡（同一個瀏覽器、同一個網址打開就會一直在）
 const KEY="final-done-r1";
 let done={};try{done=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){}
 function saveDone(){try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}}
 // 題目版本：讓孩子一眼看出哪些題目是新的（new:true 才是這次換過的）
-const VER={"chi-notes":["新增 1109",1],"chi-write":["新增 1109",1]};
+const VER={"eng-notes":["新增 1109",1],"eng-vocab":["新增 1109",1],"chi-notes":["新增 1109",1],"chi-write":["新增 1109",1]};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const bySubject=k=>ITEMS.filter(i=>i.s===k);
 const nextOf=k=>bySubject(k).find(i=>!done[i.id]);
