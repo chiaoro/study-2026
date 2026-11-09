@@ -189,11 +189,6 @@ const ITEMS=[
   {id:"chi-hanzi",stage:"extra",step:"練生字",tip:"把六課生字親手寫一遍，錯字再挑戰",s:"chi",title:"國語生字手寫本",url:"https://claude.ai/artifact/2onPR4FFZQ3oJFGBWgahpp",src:"Claude",
    units:[["生字","第一～六課共 108 字：看注音和語詞，用手指或觸控筆在田字格寫"],["模式","每次隨機抽 30 字、分課練習、錯字本、一口氣寫全部"]],
    tags:["田字格手寫","隨機 30 字","描紅提示","錯字本","家長檢查"]},
-  {id:"chi-sheet",stage:"extra",step:"寫測驗券",tip:"照考試的樣子寫，交卷後自動批改",s:"chi",title:"國語測驗券",url:"https://claude.ai/artifact/Gp5iBpH5HSb2P7772x8DLZ",src:"Claude",
-   units:[["單元評量","第 7 回第五課、第 8 回第六課"],["段考評量","第 6 回三次成績考查①、第 9 回複習二、第 10 回二次成績考查①"]],
-   tags:["共 5 回","寫國字・注音改點選","交卷自動批改","錯題訂正教學","寫作題家長批改"]},
-  {id:"chi-worksheet",stage:"extra",step:"寫測驗券",tip:"照考試的樣子寫，交卷後自動批改",s:"chi",title:"國語測驗券互動練習",url:"https://grade6-chinese-worksheet-2026.surry318.chatgpt.site/",src:"ChatGPT",
-   units:[["內容","國語測驗券互動練習"]],tags:[]},
   {id:"chi-reading",stage:"extra",step:"閱讀理解再挑戰",tip:"換一份題目，檢查讀懂了沒",s:"chi",title:"國語閱讀探險",url:"https://grade6-chinese-midterm-quiz-2026.surry318.chatgpt.site/",src:"ChatGPT",
    units:[["一般版","六課各 5 題：課文內容、語詞與基礎理解"],["進階版","六課各 5 題：推論、情境應用與閱讀判斷"]],
    tags:["一般版 30 題","進階版 30 題","錯題集中複習"]},
@@ -203,9 +198,6 @@ const ITEMS=[
   {id:"sci-mid",stage:"quiz",s:"sci",title:"六上自然期中練習",url:"https://claude.ai/artifact/PMKPz3RLaRLXWW83MnvB31",src:"Claude",
    units:[["單元1","探索天氣的變化"],["單元2","水溶液"]],
    tags:["一般版 50 題","進階版 50 題","錯題重練","可接續作答"]},
-  {id:"sci-sheet",stage:"extra",step:"寫測驗券",tip:"照考試的樣子寫，交卷後自動批改",s:"sci",title:"自然測驗券",url:"https://claude.ai/artifact/Xq9h69ZhooNNJS1JheSHxT",src:"Claude",
-   units:[["段考評量","第 7、8、9 回期中評量①②③（第一、二單元綜合練習）"]],
-   tags:["共 3 回","是非・選擇・做一做・素養題","交卷自動批改","錯題訂正教學"]},
   {id:"sci-v2",stage:"extra",s:"sci",title:"自然探究站",url:"https://grade6-science-midterm-quiz-2026.surry318.chatgpt.site/",src:"ChatGPT",
    units:[["第二版","單元1 天氣、單元2 水溶液・觀察、推理和實驗判讀"]],
    tags:["一般版","進階版","預設 50 題","單選・是非・情境題"]},
@@ -228,9 +220,6 @@ const ITEMS=[
   {id:"soc-12",stage:"quiz",s:"soc",title:"社會一二單元複習闖關",url:"https://claude.ai/artifact/NcR8diYwJx7tQaxLUczZF6",src:"Claude",
    units:[["第一單元","民主政治的發展"],["第二單元","社會變遷與族群文化"]],
    tags:["一般版 50 題","進階版 50 題","六種題型","統計圖判讀"]},
-  {id:"soc-sheet",stage:"extra",step:"寫測驗券",tip:"照考試的樣子寫，交卷後自動批改",s:"soc",title:"社會測驗券",url:"https://claude.ai/artifact/KahKfJRQhRss4LeVd28UDe",src:"Claude",
-   units:[["單元評量","第 6 回族群交流、第 7 回第二單元評量"],["段考評量","第 15、16 回期中評量、第 19、20 回第一次段考評量"]],
-   tags:["共 6 回","是非・選擇・配合・排序","交卷自動批改","錯題訂正教學"]},
   {id:"soc-v2",stage:"extra",step:"知識挑戰賽",tip:"換一份題目，檢查記熟了沒",s:"soc",title:"社會期中複習知識挑戰賽",url:"https://grade6-social-midterm-quiz-2026.surry318.chatgpt.site/",src:"ChatGPT",
    units:[["第二版","第一、二單元・民主政治、政府組織與公民參與、個人發展、族群文化"]],
    tags:["一般版 25 題","進階版 25 題","選擇・是非・複選","可選題數與單元"]},
@@ -268,10 +257,9 @@ const KEY="hub-done-r2"; // 2026-11-03 題庫全面更新：練習紀錄歸零�
 let done={};try{const cur=localStorage.getItem(KEY);if(cur)done=JSON.parse(cur)||{};else{const old=JSON.parse(localStorage.getItem("hub-done"))||{};ITEMS.forEach(i=>{if(i.stage==="note"&&old[i.id])done[i.id]=true})}}catch(e){}
 function saveDone(){try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}}
 // 題目版本：讓孩子一眼看出哪些題目是新的（new:true 才是這次換過的）
-const VER={"eng-vocab35":["新增 1104",1],"chi-worksheet":["全新C版 1103",1],"chi-new":["全新版 1103",1],"sci-new":["全新版 1103",1],"hea-new":["全新版 1103",1],"soc-new":["全新版 1103",1],"eng-new":["全新版 1103",1],
+const VER={"eng-vocab35":["新增 1104",1],"chi-new":["全新版 1103",1],"sci-new":["全新版 1103",1],"hea-new":["全新版 1103",1],"soc-new":["全新版 1103",1],"eng-new":["全新版 1103",1],
 "chi-write":["全新C版 1103",1],"chi-reading":["全新C版 1103",1],"sci-v2":["全新C版 1103",1],"hea-env":["全新 1105 版",1],"hea-life":["全新 1105 版",1],"soc-learn":["全新 1105 版",1],"soc-v2":["全新 1105 版",1],"eng-quest":["全新C版 1103",1],
-"chi-mock":["舊題 1102 版",0],"sci-mid":["舊題 1102 版",0],"hea-mid":["全新 1105 版",1],"soc-12":["全新 1105 版",1],"eng-mid":["舊題 1102 版",0],
-"chi-sheet":["舊題 1031 版",0],"sci-sheet":["舊題 1031 版",0],"soc-sheet":["舊題 1031 版",0]};
+"chi-mock":["舊題 1102 版",0],"sci-mid":["舊題 1102 版",0],"hea-mid":["全新 1105 版",1],"soc-12":["全新 1105 版",1],"eng-mid":["舊題 1102 版",0]};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const bySubject=k=>ITEMS.filter(i=>i.s===k);
 const nextOf=k=>bySubject(k).find(i=>!done[i.id]);
