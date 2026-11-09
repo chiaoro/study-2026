@@ -183,6 +183,9 @@ const ITEMS=[
   {id:"chi-notes",stage:"note",s:"chi",title:"六上國語期末複習",url:"https://claude.ai/artifact/Gx4kDbu7y7aBM7xkE6jGUE",src:"Claude",
    units:[["第7～9課","大小剛好的鞋子、狐假虎威、空城計"],["第10～12課","耶誕節、下午茶風波、橘子"],["學習地圖","三：事實與觀點、讀懂寓言；四：設問、小說閱讀"]],
    tags:["生字遮住練習","易錯字與多音字","常考重點","46 題小測驗"]},
+  {id:"chi-rhetoric",stage:"extra",step:"修辭特訓",tip:"期中修辭題全錯，先看檔案夾再辦案",s:"chi",title:"修辭偵探社",url:"https://chiaoro.github.io/study-2026/rhetoric.html",src:"Claude",
+   units:[["修辭","譬喻、轉化、誇飾、排比、類疊、設問、引用、摹寫、映襯、對偶"],["練習","一般版 30 題、進階版 30 題（陷阱題、找不同、設問三分類），錯題重辦"]],
+   tags:["判斷線索","容易搞混九組","弱點統計","錯題本"]},
   {id:"chi-write",stage:"extra",step:"練生字",tip:"先練習，考前做一次最終測驗請家長批改",s:"chi",title:"國語生字手寫本",url:"https://chiaoro.github.io/chinese-handwriting/",src:"Claude",
    units:[["生字","第七～十二課共 109 字（也可切換期中第一～六課）：看注音和語詞，在田字格手寫"],["練習","每次隨機抽 30 字；一般、描紅、進階限時三種方式；錯字本可連寫三次"],["測驗","最終測驗抽 30 字不給提示，家長批改算 100 分"]],
    tags:["田字格手寫","對照課本字","錯字本","家長檢查","最終測驗"]},
@@ -198,7 +201,7 @@ const KEY="final-done-r1";
 let done={};try{done=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){}
 function saveDone(){try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}}
 // 題目版本：讓孩子一眼看出哪些題目是新的（new:true 才是這次換過的）
-const VER={"eng-notes":["新增 1109",1],"eng-vocab":["新增 1109",1],"chi-notes":["新增 1109",1],"chi-write":["新增 1109",1]};
+const VER={"chi-rhetoric":["新增 1109",1],"eng-notes":["新增 1109",1],"eng-vocab":["新增 1109",1],"chi-notes":["新增 1109",1],"chi-write":["新增 1109",1]};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const bySubject=k=>ITEMS.filter(i=>i.s===k);
 const nextOf=k=>bySubject(k).find(i=>!done[i.id]);

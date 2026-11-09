@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>修辭偵探社</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+/* 版面概念：「修辭偵探社」。每種修辭是一份牛皮紙檔案夾，句子是案件，答案揭曉時蓋紅色印章；
+   深藍＝偵探制服、螢光黃＝線索（關鍵字畫重點）、印章紅＝判決。標題用粗明體，像檔案封面。 */
+:root{
+  --bg:#ECEFF4; --paper:#FFFFFF; --ink:#1B2A4A; --muted:#5B6782; --line:#D5DBE6;
+  --navy:#1B2A4A; --folder:#E7C67A; --folder-soft:#F6E9C6; --hl:#FFE45C; --stamp:#D7263D; --stamp-soft:#FBE3E6;
+  --ok:#1F8A5B; --ok-soft:#DDF2E7; --on:#FFFFFF;
+  --f-title:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#11161F; --paper:#1A2130; --ink:#E7ECF5; --muted:#9DA8BF; --line:#2C3547;
+  --navy:#0B111C; --folder:#C9A65A; --folder-soft:#3A3122; --hl:#8C7A1E; --stamp:#FF6B7D; --stamp-soft:#45202A;
+  --ok:#5DD39E; --ok-soft:#173A2A; --on:#FFFFFF; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11161F; --paper:#1A2130; --ink:#E7ECF5; --muted:#9DA8BF; --line:#2C3547;
+  --navy:#0B111C; --folder:#C9A65A; --folder-soft:#3A3122; --hl:#8C7A1E; --stamp:#FF6B7D; --stamp-soft:#45202A;
+  --ok:#5DD39E; --ok-soft:#173A2A; --on:#FFFFFF; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.7;padding-bottom:110px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--navy)}
+.pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:760px;margin:0 auto}
+h1,h2,h3{margin:0;font-family:var(--f-title);text-wrap:balance;line-height:1.3}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
+button:disabled{cursor:default;opacity:.45}
+:focus-visible{outline:3px solid var(--hl);outline-offset:2px}
+mark{background:linear-gradient(transparent 55%,var(--hl) 55%);color:inherit;padding:0 1px}
+
+.mast{background:var(--navy);color:var(--on)}
+.mast .wrap{padding-block:16px 0;display:grid;gap:4px}
+.mast a.back{color:#C8D2E6;font-size:14px;text-decoration:none}
+.mast h1{font-size:clamp(28px,7vw,40px);font-weight:900;letter-spacing:.06em}
+.mast p{color:#C8D2E6;font-size:14px}
+.tabs{display:flex;gap:4px;margin-top:12px;overflow-x:auto}
+.tabs button{flex:none;border:0;border-radius:10px 10px 0 0;background:#2C3E63;color:#D7DFEF;padding:8px 14px;font-weight:700;font-size:15px}
+.tabs button[aria-selected="true"]{background:var(--bg);color:var(--ink)}
+
+main .wrap{padding-block:18px;display:grid;gap:16px}
+.view[hidden]{display:none!important}
+.view{display:grid;gap:16px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;gap:10px}
+.lead{color:var(--muted);font-size:15px}
+
+/* 首頁 */
+.start{background:var(--paper);border:2px solid var(--navy);border-radius:16px;padding:18px;display:grid;gap:12px}
+.start h2{font-size:24px}
+.levels{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lv{border:2px solid var(--line);background:var(--paper);border-radius:14px;padding:12px;text-align:left;display:grid;gap:2px}
+.lv b{font-size:18px}
+.lv small{color:var(--muted);font-size:13px;line-height:1.4}
+.lv[aria-pressed="true"]{border-color:var(--navy);background:var(--folder-soft);box-shadow:inset 0 0 0 1px var(--navy)}
+.cnt{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.cnt button{border:1.5px solid var(--line);background:var(--paper);border-radius:999px;padding:3px 12px;font-size:14px}
+.cnt button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:var(--on)}
+.big{min-height:56px;border-radius:12px;border:0;background:var(--navy);color:var(--on);font-weight:700;font-size:19px;padding:10px 18px}
+.big.alt{background:var(--paper);color:var(--stamp);border:2px solid var(--stamp)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.weak{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.wk{border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:grid;gap:4px;background:var(--paper);text-align:left}
+.wk b{font-family:var(--f-title);font-size:17px}
+.wk .bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.wk .bar i{display:block;height:100%;background:var(--ok)}
+.wk.low .bar i{background:var(--stamp)}
+.wk small{font-size:12px;color:var(--muted)}
+
+/* 小百科：檔案夾 */
+.files{display:grid;gap:14px}
+.file{position:relative;background:var(--folder-soft);border:1px solid var(--folder);border-radius:4px 14px 14px 14px;padding:16px 16px 14px;margin-top:14px;display:grid;gap:8px}
+.file::before{content:attr(data-no);position:absolute;top:-24px;left:-1px;height:24px;padding:0 14px;background:var(--folder);border-radius:10px 10px 0 0;font-size:13px;font-weight:700;line-height:24px;color:#3B2E10}
+.file h3{font-size:24px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.file h3 small{font-family:var(--f-body);font-size:14px;color:var(--muted);font-weight:500}
+.clue{background:var(--paper);border-radius:10px;padding:8px 12px;font-weight:700}
+.clue::before{content:"判斷線索　";color:var(--stamp);font-size:13px}
+.ex{display:grid;gap:4px;padding-left:12px;border-left:3px solid var(--folder)}
+.ex p::before{content:"例　";color:var(--muted);font-size:13px}
+.trap{background:var(--stamp-soft);border-radius:10px;padding:8px 12px;font-size:15px}
+.trap::before{content:"小心陷阱　";color:var(--stamp);font-weight:700;font-size:13px}
+.vs{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px;background:var(--paper)}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{font-size:13px;color:var(--muted)}
+td:first-child{font-family:var(--f-title);font-weight:700;white-space:nowrap}
+
+/* 作答 */
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.track{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--navy)}
+.case{position:relative;background:var(--paper);border:2px solid var(--navy);border-radius:16px;padding:18px;display:grid;gap:14px;overflow:hidden}
+.case .no{font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.08em}
+.case .ask{font-weight:700;font-size:18px}
+.case .sent{font-family:var(--f-title);font-size:clamp(20px,5vw,24px);font-weight:700;line-height:1.7;background:var(--folder-soft);border-radius:10px;padding:12px 14px}
+.opts{display:grid;gap:10px}
+.opt{border:2px solid var(--line);background:var(--paper);border-radius:12px;padding:12px 14px;text-align:left;font-size:17px;line-height:1.5;display:flex;gap:10px;align-items:baseline}
+.opt .k{font-weight:700;color:var(--muted);flex:none}
+.opt[aria-checked="true"]{border-color:var(--navy);background:var(--folder-soft);box-shadow:inset 0 0 0 1px var(--navy)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--stamp);background:var(--stamp-soft)}
+.stampmark{position:absolute;top:14px;right:12px;font-family:var(--f-title);font-weight:900;font-size:22px;border:3px solid currentColor;border-radius:8px;padding:0 10px;transform:rotate(-10deg);opacity:.9}
+.stampmark.ok{color:var(--ok)} .stampmark.no{color:var(--stamp)}
+.why{border-top:2px dashed var(--line);padding-top:12px;display:grid;gap:6px;font-size:16px}
+.why b{color:var(--stamp)} .why.ok b{color:var(--ok)}
+.why .seefile{justify-self:start;background:none;border:0;padding:0;color:var(--navy);text-decoration:underline;font-weight:700;font-size:15px}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:15;background:var(--paper);border-top:1px solid var(--line);padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.bar .in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;gap:10px}
+.bar button{min-height:52px;border-radius:12px;font-weight:700;font-size:17px;padding:6px 16px}
+.bar .quit{border:1.5px solid var(--line);background:var(--paper)}
+.bar .go{border:0;background:var(--navy);color:var(--on)}
+.bar .go.wait{opacity:.5;pointer-events:none}
+
+/* 成績 */
+.result{background:var(--paper);border:2px solid var(--navy);border-radius:16px;padding:20px;display:grid;gap:12px;text-align:center;justify-items:center}
+.result .score{font-family:var(--f-title);font-size:56px;font-weight:900;line-height:1;color:var(--navy)}
+.result .seal{font-family:var(--f-title);font-weight:900;font-size:24px;color:var(--stamp);border:4px solid var(--stamp);border-radius:12px;padding:2px 14px;transform:rotate(-6deg)}
+.result .seal.good{color:var(--ok);border-color:var(--ok)}
+.mlist{display:grid;gap:8px;text-align:left;width:100%}
+.mitem{border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:15px}
+.mitem b{font-family:var(--f-title)}
+.empty{color:var(--muted);text-align:center;padding:12px}
+@media (max-width:420px){.levels,.row2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="mast"><div class="wrap pad">
+  <a class="back" href="final.html">← 回期末複習站</a>
+  <h1>修辭偵探社</h1>
+  <p>每個句子都是一個案件，找到「線索」就能破案。</p>
+  <div class="tabs" role="tablist" aria-label="頁面">
+    <button role="tab" data-tab="home" aria-selected="true">開始辦案</button>
+    <button role="tab" data-tab="files" aria-selected="false">修辭檔案夾</button>
+    <button role="tab" data-tab="vs" aria-selected="false">容易搞混</button>
+  </div>
+</div></header>
+<main><div class="wrap pad" id="app"></div></main>
+<footer class="bar" id="bar" hidden></footer>
+
+<script>
+'use strict';
+// 十種修辭：六上課本出現過、段考選擇題最常考的類型。例句都是另外寫的練習句。
+const R={
+ 譬喻:{alias:"比喻",clue:"兩樣「不同的東西」有相似的地方，用一個比另一個。常見比喻詞：像、好像、如、彷彿、是、成了。",
+   ex:["弟弟的臉紅得像蘋果。（明喻：用「像」）","月亮是夜空裡的一盞燈。（暗喻：用「是」）"],
+   trap:"「他長得很像爸爸」「天空好像要下雨」都不是譬喻！前一句是同類比較（人比人），後一句的「好像」是猜測。"},
+ 轉化:{alias:"擬人",clue:"把「不是人」的東西寫成會做人的動作、有人的心情，而且句子裡沒有「像」。",
+   ex:["小草從泥土裡探出頭來，好奇的看著世界。","鬧鐘一大早就大聲叫我起床。"],
+   trap:"有「像」就先想到譬喻：「小草像小孩一樣探出頭」是譬喻；直接寫「小草探出頭」才是轉化。"},
+ 誇飾:{alias:"誇張",clue:"故意說得很誇張、比真實大很多或小很多，現實中不可能發生。",
+   ex:["他的嗓門大得連屋頂都快被掀翻了。","我等你等了一百年！"],
+   trap:"「西瓜大得像籃球」是合理的比較（譬喻）；「他跑得比火箭還快」不可能，才是誇飾。"},
+ 排比:{alias:"",clue:"三個或三個以上、結構相同或相似的句子（或詞組）排在一起，語氣一句比一句強。",
+   ex:["讀書使人充實，運動使人健康，助人使人快樂。","有的人在跑步，有的人在跳繩，有的人在打球。"],
+   trap:"只有兩句對稱的是「對偶」，不是排比；排比要三句以上。"},
+ 類疊:{alias:"疊字、疊詞、類字、類句",clue:"同一個字、詞或句子重複出現。",
+   ex:["媽媽慢慢的、輕輕的把門關上。（疊字）","走啊走，走啊走，我們終於走到山頂了。（類句）"],
+   trap:"排比的句子裡也常有重複的詞，但排比的重點是「三句結構一樣」；類疊的重點是「重複」。"},
+ 設問:{alias:"提問、激問、懸問",clue:"作者明明知道答案，卻故意用問句引起注意。分三種：提問＝自問自答；激問＝答案在問題的反面；懸問＝只問不答，讓讀者自己想。",
+   ex:["什麼是幸福？幸福就是全家人一起吃晚餐。（提問）","難道你不想考一百分嗎？（激問：當然想）"],
+   trap:"真的不知道答案、想問別人的一般問句，例如「你吃飽了嗎？」不是設問。"},
+ 引用:{alias:"",clue:"借用別人說過的話、俗語、名言、詩句或成語故事來加強自己的說法。常見提示：俗話說、古人說、正所謂、「」。",
+   ex:["俗話說：「一分耕耘，一分收穫。」只要努力就會有成果。","正所謂「失敗為成功之母」，別灰心。"],
+   trap:"只是轉述家人的一般對話（媽媽說：「快去洗澡。」）通常不算引用，引用的是有道理、大家知道的名言佳句。"},
+ 摹寫:{alias:"視覺、聽覺、嗅覺、味覺、觸覺",clue:"把看到、聽到、聞到、嘗到、摸到的感覺具體寫出來。",
+   ex:["鍋子裡的湯咕嘟咕嘟的冒著泡。（聽覺）","剛出爐的麵包散發出濃濃的奶油香。（嗅覺）"],
+   trap:"要分清楚是哪一種感官：顏色、形狀＝視覺；聲音＝聽覺；味道（吃）＝味覺；氣味（聞）＝嗅覺；冷熱軟硬＝觸覺。"},
+ 映襯:{alias:"對比",clue:"把兩種相反的人、事、物或情況放在一起比較，讓差別更明顯。常見提示：卻、但是、反而。",
+   ex:["他的身材矮小，志氣卻很高大。","外面下著大雨，屋裡卻一片溫暖。"],
+   trap:"對偶看的是「字數、結構對稱」；映襯看的是「意思相反」。"},
+ 對偶:{alias:"對仗",clue:"上下兩句字數相同、結構相對（名詞對名詞、動詞對動詞），讀起來很整齊。",
+   ex:["海闊憑魚躍，天高任鳥飛。","一粥一飯，當思來處不易；半絲半縷，恆念物力維艱。"],
+   trap:"對偶只有兩句；三句以上結構相同的是排比。"}
+};
+const NAMES=Object.keys(R);
+
+// 題庫：t＝考的修辭；lv：n 一般、a 進階。o 四個選項，a 正確答案索引。
+const Q=[
+ // ── 一般：看句子判斷修辭 ──
+ {lv:"n",t:"譬喻",s:"弟弟害羞的時候，臉紅得像蘋果。",o:["譬喻","轉化","誇飾","引用"],a:0,e:"用「像」把臉比成蘋果，臉和蘋果是不同的東西，相似點是紅。"},
+ {lv:"n",t:"譬喻",s:"月亮是夜空裡的一盞燈。",o:["轉化","譬喻","映襯","類疊"],a:1,e:"用「是」把月亮比成燈，這叫暗喻，也是譬喻。"},
+ {lv:"n",t:"譬喻",s:"時間如流水，一去不回頭。",o:["誇飾","排比","譬喻","設問"],a:2,e:"「如」是比喻詞，把時間比成流水。"},
+ {lv:"n",t:"轉化",s:"小草從泥土裡探出頭來，好奇的看著世界。",o:["譬喻","轉化","摹寫","誇飾"],a:1,e:"小草不會「好奇的看」，這是把小草當成人來寫，句子裡沒有「像」。"},
+ {lv:"n",t:"轉化",s:"風兒在樹梢輕輕的唱著歌。",o:["轉化","引用","對偶","譬喻"],a:0,e:"風不會唱歌，把風寫成人，是轉化（擬人）。"},
+ {lv:"n",t:"轉化",s:"鬧鐘一大早就大聲叫我起床。",o:["誇飾","類疊","轉化","設問"],a:2,e:"鬧鐘不會「叫」人，把鬧鐘寫成人在說話。"},
+ {lv:"n",t:"誇飾",s:"他的嗓門大得連屋頂都快被掀翻了。",o:["譬喻","誇飾","摹寫","映襯"],a:1,e:"聲音不可能把屋頂掀翻，故意說得很誇張。"},
+ {lv:"n",t:"誇飾",s:"你怎麼這麼慢？我等你等了一百年！",o:["誇飾","設問","類疊","引用"],a:0,e:"不可能等一百年，是誇張的說法。前面的問句是一般的抱怨，重點在「一百年」。"},
+ {lv:"n",t:"誇飾",s:"這碗麵辣得我嘴巴都要噴火了。",o:["轉化","譬喻","對偶","誇飾"],a:3,e:"嘴巴不可能噴火，誇大辣的程度。"},
+ {lv:"n",t:"排比",s:"讀書使人充實，運動使人健康，助人使人快樂。",o:["對偶","映襯","排比","引用"],a:2,e:"三句的結構都是「○○使人○○」，是排比。"},
+ {lv:"n",t:"排比",s:"有的人在跑步，有的人在跳繩，有的人在打球。",o:["排比","譬喻","設問","摹寫"],a:0,e:"三句結構相同排在一起，是排比。"},
+ {lv:"n",t:"排比",s:"春天，花開了；夏天，蟬叫了；秋天，葉落了。",o:["誇飾","排比","轉化","對偶"],a:1,e:"三組結構相同的句子，是排比（只有兩句才是對偶）。"},
+ {lv:"n",t:"類疊",s:"媽媽慢慢的、輕輕的把門關上。",o:["類疊","誇飾","引用","譬喻"],a:0,e:"「慢慢」「輕輕」是疊字，屬於類疊。"},
+ {lv:"n",t:"類疊",s:"走啊走，走啊走，我們終於走到山頂了。",o:["映襯","對偶","設問","類疊"],a:3,e:"「走啊走」重複出現，是類疊。"},
+ {lv:"n",t:"類疊",s:"他每次都說：「明天再做，明天再做。」",o:["引用","類疊","轉化","譬喻"],a:1,e:"「明天再做」重複兩次，是類疊。這不是名言，所以不是引用。"},
+ {lv:"n",t:"設問",s:"什麼是幸福？幸福就是全家人一起吃晚餐。",o:["設問","引用","誇飾","映襯"],a:0,e:"先問再自己回答，是設問裡的「提問」。"},
+ {lv:"n",t:"設問",s:"難道你不想考一百分嗎？",o:["誇飾","轉化","設問","類疊"],a:2,e:"答案在反面（當然想），是設問裡的「激問」。"},
+ {lv:"n",t:"設問",s:"天上的星星到底有幾顆呢？",o:["譬喻","設問","摹寫","排比"],a:1,e:"只問不答，讓讀者自己去想，是設問裡的「懸問」。"},
+ {lv:"n",t:"引用",s:"俗話說：「一分耕耘，一分收穫。」只要努力就會有成果。",o:["類疊","對偶","引用","設問"],a:2,e:"借用俗話來證明自己的說法，是引用。"},
+ {lv:"n",t:"引用",s:"孔子說：「學而時習之。」所以我們要常常複習。",o:["引用","譬喻","排比","映襯"],a:0,e:"借用孔子的話，是引用。"},
+ {lv:"n",t:"引用",s:"正所謂「失敗為成功之母」，這次沒考好別灰心。",o:["轉化","引用","譬喻","誇飾"],a:1,e:"「失敗為成功之母」是大家熟知的名言，是引用。"},
+ {lv:"n",t:"摹寫",s:"鍋子裡的湯咕嘟咕嘟的冒著泡。",o:["摹寫","譬喻","引用","映襯"],a:0,e:"寫出湯滾的聲音，是摹寫（聽覺）。"},
+ {lv:"n",t:"摹寫",s:"剛出爐的麵包散發出濃濃的奶油香。",o:["誇飾","設問","摹寫","排比"],a:2,e:"寫出聞到的香味，是摹寫（嗅覺）。"},
+ {lv:"n",t:"摹寫",s:"冰涼的井水滑過手指，舒服極了。",o:["對偶","摹寫","轉化","引用"],a:1,e:"寫出皮膚摸到的冰涼感覺，是摹寫（觸覺）。"},
+ {lv:"n",t:"映襯",s:"他的身材矮小，志氣卻很高大。",o:["映襯","誇飾","排比","類疊"],a:0,e:"「矮小」和「高大」意思相反，放在一起比較，是映襯。"},
+ {lv:"n",t:"映襯",s:"外面下著大雨，屋裡卻一片溫暖。",o:["引用","摹寫","對偶","映襯"],a:3,e:"外面冷、屋裡暖，兩種相反的情況對照，是映襯。"},
+ {lv:"n",t:"映襯",s:"有人忙著打掃教室，有人卻在一旁偷懶。",o:["設問","映襯","轉化","譬喻"],a:1,e:"「認真」和「偷懶」相反，用「卻」對照，是映襯。"},
+ {lv:"n",t:"對偶",s:"海闊憑魚躍，天高任鳥飛。",o:["排比","類疊","對偶","設問"],a:2,e:"上下兩句都是五個字，「海闊」對「天高」、「魚躍」對「鳥飛」，是對偶。"},
+ {lv:"n",t:"對偶",s:"一粥一飯，當思來處不易；半絲半縷，恆念物力維艱。",o:["對偶","引用","誇飾","譬喻"],a:0,e:"上下兩句字數相同、結構相對，是對偶（第二課朱子治家格言）。"},
+ {lv:"n",t:"對偶",s:"綠樹村邊合，青山郭外斜。",o:["摹寫","映襯","轉化","對偶"],a:3,e:"「綠樹」對「青山」、「村邊」對「郭外」，兩句對稱，是對偶。"},
+ // ── 進階：陷阱題、比較題、細分題 ──
+ {lv:"a",t:"譬喻",ask:"下列哪一句「沒有」用到譬喻？",o:["她笑起來像花一樣燦爛。","他長得很像他爸爸。","操場上的人群像一群螞蟻。","天上的雲朵像棉花糖。"],a:1,e:"「像爸爸」是同類（人和人）的相似比較，不是譬喻。其他三句都是把不同的東西拿來比。"},
+ {lv:"a",t:"譬喻",ask:"下列哪一句「沒有」用到譬喻？",o:["她的眼睛像星星一樣亮。","天空好像要下雨了。","瀑布像一條白色的絲帶。","書是我最好的朋友。"],a:1,e:"「好像要下雨」的「好像」是猜測，不是比喻。「書是朋友」用「是」，是暗喻。"},
+ {lv:"a",t:"譬喻",ask:"「書是我最好的朋友。」用了什麼修辭？",o:["轉化，因為把書當成人","譬喻，用「是」把書比成朋友","誇飾，因為說得太誇張","沒有用修辭"],a:1,e:"有比喻詞「是」，把書比成朋友，這是暗喻。轉化不會出現「是、像」這類比喻詞。"},
+ {lv:"a",t:"轉化",ask:"「書本靜靜的躺在桌上，等著我去翻開它。」用了什麼修辭？",o:["譬喻","轉化","誇飾","映襯"],a:1,e:"書不會「躺著等人」，直接把書寫成人的樣子，沒有用「像」，是轉化。"},
+ {lv:"a",t:"轉化",ask:"哪一句和「小狗開心的對我說早安」用了相同的修辭？",o:["鉛筆像一根細細的樹枝。","桌上的鉛筆累得睡著了。","我的鉛筆多得可以排到操場。","老師說：「鉛筆要削尖。」"],a:1,e:"題目和答案都把物寫成人（說早安、累得睡著），是轉化。①譬喻 ③誇飾 ④一般對話。"},
+ {lv:"a",t:"轉化",ask:"「太陽公公笑咪咪的看著我們。」和下列哪一句修辭相同？",o:["太陽像一顆大火球。","太陽熱得可以煎蛋。","月亮姐姐躲進了雲裡。","太陽每天從東邊升起。"],a:2,e:"太陽公公會笑、月亮姐姐會躲，都是把物當人寫，是轉化。"},
+ {lv:"a",t:"誇飾",ask:"下列哪一句是誇飾，而不是譬喻？",o:["這個西瓜大得像籃球。","他跑得比火箭還快。","雪花像白色的羽毛。","她的聲音像小鳥一樣好聽。"],a:1,e:"人不可能跑得比火箭快，是誇張。西瓜和籃球差不多大，是合理的比喻。"},
+ {lv:"a",t:"誇飾",ask:"「我緊張得心臟快要從嘴巴跳出來了！」用了什麼修辭？",o:["譬喻","摹寫","誇飾","轉化"],a:2,e:"心臟不可能跳出嘴巴，是誇大緊張的感覺。"},
+ {lv:"a",t:"誇飾",ask:"哪一句「沒有」用到誇飾？",o:["他的力氣大得可以舉起一座山。","我餓得可以吃下一頭牛。","弟弟高興得跳了起來。","教室吵得連屋頂都要掀了。"],a:2,e:"高興得跳起來是真的會發生的動作，不誇張。其他三句都不可能發生。"},
+ {lv:"a",t:"排比",ask:"排比至少要有幾句結構相似的句子？",o:["一句","兩句","三句以上","五句以上"],a:2,e:"排比是三句或三句以上；只有兩句對稱的是對偶。"},
+ {lv:"a",t:"排比",ask:"下列哪一句是排比？",o:["山是綠的，水是清的，天是藍的。","他慢慢的走回家。","老師說：「要早睡早起。」","小鳥在枝頭唱歌。"],a:0,e:"三句都是「○是○的」，結構相同，是排比。"},
+ {lv:"a",t:"排比",ask:"「我們要愛護家人，關心朋友，珍惜地球。」用了什麼修辭？",o:["對偶","排比","映襯","誇飾"],a:1,e:"三個結構相同的「動詞＋對象」排在一起，是排比。"},
+ {lv:"a",t:"類疊",ask:"下列哪一句「沒有」用到類疊？",o:["他高高興興的回家了。","我一次又一次的練習。","白雲在天上飄呀飄。","他跑得非常快。"],a:3,e:"「跑得非常快」沒有重複的字詞。其他三句都有重複（高高興興、一次又一次、飄呀飄）。"},
+ {lv:"a",t:"類疊",ask:"「好香！好香！真是好香的麵包！」除了摹寫，還用了哪一種修辭？",o:["類疊","譬喻","對偶","映襯"],a:0,e:"「好香」重複出現，是類疊；寫香味則是嗅覺摹寫。一句話可以同時有兩種修辭。"},
+ {lv:"a",t:"設問",ask:"下列哪一句是「提問」（自問自答）？",o:["為什麼要讀書？因為讀書能讓我們看見更大的世界。","難道你不怕嗎？","宇宙的盡頭在哪裡呢？","你吃過早餐了嗎？"],a:0,e:"①先問再答，是提問。②激問 ③懸問 ④一般問句，不是設問。"},
+ {lv:"a",t:"設問",ask:"「難道你不知道上課要準時嗎？」屬於哪一種？",o:["提問","激問","懸問","不是設問"],a:1,e:"答案在問題的反面（你當然知道），是激問。"},
+ {lv:"a",t:"設問",ask:"媽媽在廚房問：「你吃過早餐了嗎？」這句話是不是設問？",o:["是，提問","是，激問","是，懸問","不是，媽媽真的想知道答案"],a:3,e:"設問是「明知故問」。媽媽真的不知道才問，是一般問句。"},
+ {lv:"a",t:"設問",ask:"哪一句和「難道你不想贏嗎？」用了相同的設問？",o:["誰不愛自己的家呢？","什麼是勇氣？勇氣就是不怕失敗。","天上到底有沒有外星人呢？","現在幾點了？"],a:0,e:"兩句的答案都在反面（當然想贏、沒有人不愛家），都是激問。"},
+ {lv:"a",t:"設問",ask:"「就算停止送禮，對戰爭又會有多少幫助呢？」（第十課）屬於哪一種？",o:["提問","激問","懸問","不是設問"],a:1,e:"答案在反面（沒有什麼幫助），是激問。學習地圖四也有教。"},
+ {lv:"a",t:"引用",ask:"下列哪一句用了引用？",o:["媽媽說：「快去洗澡。」","老師常說：「細心是成功的第一步。」","弟弟說：「我肚子餓了。」","同學問：「你要去哪裡？」"],a:1,e:"「細心是成功的第一步」是有道理的名言，用來勉勵，是引用。其他是一般對話。"},
+ {lv:"a",t:"引用",ask:"「『三人行，必有我師』，我們要多向別人學習。」用了什麼修辭？",o:["對偶","設問","引用","誇飾"],a:2,e:"借用《論語》的話，雖然沒有寫「孔子說」，也是引用。"},
+ {lv:"a",t:"摹寫",ask:"「遠處傳來叮叮噹噹的鈴聲。」主要是哪一種摹寫？",o:["視覺","聽覺","嗅覺","觸覺"],a:1,e:"鈴聲是耳朵聽到的，是聽覺摹寫。"},
+ {lv:"a",t:"摹寫",ask:"「這杯檸檬汁酸得我眼睛都瞇起來了。」主要寫哪一種感覺？",o:["視覺","味覺","嗅覺","聽覺"],a:1,e:"酸是嘴巴嘗到的味道，是味覺摹寫。"},
+ {lv:"a",t:"摹寫",ask:"「夕陽把天空染成一片橘紅色。」寫的是哪一種感覺？",o:["觸覺","嗅覺","視覺","味覺"],a:2,e:"顏色是眼睛看到的，是視覺摹寫。"},
+ {lv:"a",t:"摹寫",ask:"「這朵玫瑰好香啊！」用了什麼修辭？",o:["摹寫（嗅覺）","轉化","誇飾","譬喻"],a:0,e:"寫出聞到的花香，是嗅覺摹寫。玫瑰沒有做人的動作，不是轉化。"},
+ {lv:"a",t:"映襯",ask:"下列哪一句是映襯？",o:["他雖然家境貧窮，卻很樂於助人。","他的家很大很大。","他每天都去公園散步。","他的家像一座城堡。"],a:0,e:"「貧窮」和「樂於助人（心靈富足）」形成對比，是映襯。④是譬喻。"},
+ {lv:"a",t:"映襯",ask:"對偶和映襯最大的不同是什麼？",o:["對偶要有「像」，映襯不用","對偶看字數結構對稱，映襯看意思相反","對偶要三句以上，映襯只要一句","兩個完全一樣"],a:1,e:"對偶：上下句字數相同、結構相對；映襯：把相反的事放在一起比較。"},
+ {lv:"a",t:"對偶",ask:"下列哪一句是對偶？",o:["讀書破萬卷，下筆如有神。","我喜歡讀書，也喜歡畫畫，更喜歡唱歌。","今天天氣很好。","他高興得跳起來。"],a:0,e:"兩句都是五個字，「讀書」對「下筆」、「破萬卷」對「如有神」，是對偶。②有三句，比較像排比。"},
+ {lv:"a",t:"對偶",ask:"「宜未雨而綢繆，毋臨渴而掘井。」（第二課）用了什麼修辭？",o:["排比","對偶","類疊","設問"],a:1,e:"上下兩句字數相同、「未雨」對「臨渴」、「綢繆」對「掘井」，是對偶。"},
+ {lv:"a",t:"譬喻",ask:"「政彬就像獵豹般向前衝刺。」（第一課）用了什麼修辭？",o:["轉化","誇飾","譬喻","摹寫"],a:2,e:"用「像」把政彬比成獵豹，是譬喻。"}
+];
+Q.forEach((q,i)=>q.id=i);
+
+const KEY='rhetoric-v1';
+let db;try{db=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){db={}}
+db.stat=db.stat||{};db.book=db.book||{};db.lv=db.lv||'n';db.n=db.n||10;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}}
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+let tab='home',run=null,lockT=0;
+
+function setTab(t){tab=t;document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));run=null;render();scrollTo(0,0)}
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
+
+function render(){
+  $('bar').hidden=true;
+  if(run)return run.done?result():question();
+  ({home,files,vs})[tab]();
+}
+
+/* ---------- 首頁 ---------- */
+function home(){
+  const bookIds=Object.keys(db.book).map(Number);
+  const weak=NAMES.map(n=>{const s=db.stat[n]||{ok:0,all:0};return {n,ok:s.ok,all:s.all,p:s.all?s.ok/s.all:null}});
+  $('app').innerHTML=`
+  <section class="start">
+    <h2>今天要辦幾個案件？</h2>
+    <div class="levels" role="radiogroup" aria-label="程度">
+      <button class="lv" role="radio" data-lv="n" aria-pressed="${db.lv==='n'}"><b>一般版</b><small>看一句話，判斷用了哪一種修辭（30 題）</small></button>
+      <button class="lv" role="radio" data-lv="a" aria-pressed="${db.lv==='a'}"><b>進階版</b><small>陷阱題、找不同、設問三種分類（30 題）</small></button>
+    </div>
+    <div class="cnt">一次寫 ${[10,20,30].map(n=>`<button type="button" data-n="${n}" aria-pressed="${db.n===n}">${n} 題</button>`).join('')}</div>
+    <div class="row2"><button class="big" id="go" type="button">開始辦案 →</button><button class="big alt" id="book" type="button" ${bookIds.length?'':'disabled'}>錯題重辦（${bookIds.length}）</button></div>
+    <p class="lead">選好答案後按「對答案」才會揭曉，按之前都可以改。答錯的題目會收進錯題本，連續答對兩次才會移出。</p>
+  </section>
+  <section class="panel">
+    <h3>我的弱點在哪裡？</h3>
+    <p class="lead">每種修辭的答對率，紅色是還要加強的。點一下可以看那一種的檔案。</p>
+    <div class="weak">${weak.map(w=>`<button type="button" class="wk ${w.p!==null&&w.p<.7?'low':''}" data-file="${w.n}"><b>${w.n}</b><span class="bar"><i style="width:${w.p===null?0:w.p*100}%"></i></span><small>${w.all?`答對 ${w.ok} / ${w.all}`:'還沒練過'}</small></button>`).join('')}</div>
+  </section>
+  <section class="panel"><h3>辦案三步驟</h3><ol style="margin:0;padding-left:1.2em;display:grid;gap:4px">
+    <li>先看「修辭檔案夾」，記住每種修辭的<mark>判斷線索</mark>。</li>
+    <li>再看「容易搞混」，段考最愛考的就是這幾組。</li>
+    <li>一般版練到八成以上，再挑戰進階版；錯的題目用「錯題重辦」再練。</li></ol></section>`;
+  document.querySelectorAll('[data-lv]').forEach(b=>b.onclick=()=>{db.lv=b.dataset.lv;save();render()});
+  document.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{db.n=+b.dataset.n;save();render()});
+  document.querySelectorAll('[data-file]').forEach(b=>b.onclick=()=>openFile(b.dataset.file));
+  $('go').onclick=()=>start(shuffle(Q.filter(q=>q.lv===db.lv)).slice(0,db.n),db.lv==='n'?'一般版':'進階版');
+  $('book').onclick=()=>start(shuffle(bookIds.map(i=>Q[i])),'錯題重辦');
+}
+function openFile(n){setTab('files');requestAnimationFrame(()=>{const el=document.getElementById('f-'+n);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})})}
+
+/* ---------- 修辭檔案夾 ---------- */
+function files(){
+  $('app').innerHTML=`<p class="lead">十種六上最常考的修辭。每份檔案都有「判斷線索」和「小心陷阱」。</p>
+  <div class="files">${NAMES.map((n,i)=>{const r=R[n];return `<article class="file" id="f-${n}" data-no="檔案 ${String(i+1).padStart(2,'0')}">
+    <h3>${n}${r.alias?`<small>${r.alias}</small>`:''}</h3>
+    <p class="clue">${r.clue}</p>
+    <div class="ex">${r.ex.map(x=>`<p>${esc(x)}</p>`).join('')}</div>
+    <p class="trap">${esc(r.trap)}</p></article>`}).join('')}</div>`;
+}
+
+/* ---------- 容易搞混 ---------- */
+function vs(){
+  const rows=[
+   ["譬喻 vs 轉化","有「像、如、是」把 A 比成 B → 譬喻","沒有比喻詞，直接讓物做人的事 → 轉化","雲像綿羊（譬喻）／雲在天上散步（轉化）"],
+   ["譬喻 vs 不是譬喻","兩樣「不同類」的東西相比 → 譬喻","同類相比、或「好像」表示猜測 → 不是","她像媽媽（不是）／天空好像要下雨（不是）"],
+   ["譬喻 vs 誇飾","比得合理 → 譬喻","誇大到不可能 → 誇飾","西瓜像籃球（譬喻）／跑得比火箭快（誇飾）"],
+   ["排比 vs 對偶","三句以上結構相同 → 排比","剛好兩句、字數相同、詞性相對 → 對偶","讀書使人…運動使人…助人使人…（排比）"],
+   ["排比 vs 類疊","重點在三句「結構」一樣 → 排比","重點在字詞「重複」 → 類疊","慢慢的、輕輕的（類疊）"],
+   ["對偶 vs 映襯","看「形式」：兩句對稱 → 對偶","看「意思」：相反的事對照 → 映襯","身材矮小，志氣高大（映襯）"],
+   ["提問 vs 激問 vs 懸問","提問：問了自己答","激問：答案在反面；懸問：只問不答","難道你不想贏嗎？（激問）"],
+   ["設問 vs 一般問句","作者明知故問 → 設問","真的想知道答案 → 一般問句","你吃飽了嗎？（一般問句）"],
+   ["引用 vs 一般對話","借用名言、俗語、詩句 → 引用","家人朋友的日常對話 → 不是","老師說：「細心是成功的第一步。」（引用）"]
+  ];
+  $('app').innerHTML=`<section class="panel"><h3>段考最愛考的九組</h3><p class="lead">左右兩欄比一比，下面的例子可以幫你記。</p>
+   <div class="vs"><table><thead><tr><th>容易搞混</th><th>是這個</th><th>是那個</th><th>例子</th></tr></thead><tbody>
+   ${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</tbody></table></div></section>
+   <section class="panel"><h3>一句話可以有兩種修辭</h3><p>「好香！好香！真是好香的麵包！」＝<mark>類疊</mark>（好香重複）＋<mark>摹寫</mark>（嗅覺）。<br>選擇題問「用了哪一種」時，選項裡只會出現其中一個；問「沒有用到哪一種」時，要把兩種都排除。</p></section>`;
+}
+
+/* ---------- 作答 ---------- */
+// 選項每次隨機排列；有順序意義的選項（一句／兩句…、提問／激問…、是／不是）維持原順序
+const fixedOrder=q=>q.o.includes('一句')||q.o[0]==='提問'||q.o.some(x=>x.startsWith('是，'))||q.o.some(x=>x.startsWith('有，'));
+function start(list,label){if(!list.length)return;run={list,label,at:0,pick:null,checked:false,ok:0,wrong:[],ord:list.map(q=>fixedOrder(q)?[0,1,2,3]:shuffle([0,1,2,3]))};render();scrollTo(0,0)}
+function question(){
+  const q=run.list[run.at],ask=q.ask||'這個句子用了哪一種修辭？';
+  $('app').innerHTML=`<div class="qhead"><span>${run.label}</span><span>第 ${run.at+1} / ${run.list.length} 案・破案 ${run.ok}</span></div>
+  <div class="track"><i style="width:${run.at/run.list.length*100}%"></i></div>
+  <article class="case" id="case"><span class="no">案件 ${String(run.at+1).padStart(2,'0')}</span>
+   <p class="ask">${esc(ask)}</p>${q.s?`<p class="sent">${esc(q.s)}</p>`:''}
+   <div class="opts" role="radiogroup">${run.ord[run.at].map((j,k)=>`<button type="button" class="opt" role="radio" data-j="${j}" aria-checked="${run.pick===j}"><span class="k">${'ABCD'[k]}</span><span>${esc(q.o[j])}</span></button>`).join('')}</div>
+   <div id="why"></div></article>`;
+  document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(run.checked)return;run.pick=+b.dataset.j;document.querySelectorAll('.opt').forEach(x=>x.setAttribute('aria-checked',x===b));paintBar()});
+  paintBar();
+}
+function paintBar(){
+  const last=run.at===run.list.length-1;
+  const label=!run.checked?'對答案':last?'看結果 →':'下一案 →';
+  $('bar').innerHTML=`<div class="in"><button class="quit" id="quit" type="button">結束</button><button class="go${Date.now()<lockT?' wait':''}" id="next" type="button" ${!run.checked&&run.pick===null?'disabled':''}>${label}</button></div>`;
+  $('bar').hidden=false;
+  $('quit').onclick=()=>{if(run.at===0&&!run.checked){run=null;return render()}run.list=run.list.slice(0,run.at+(run.checked?1:0));run.done=true;render()};
+  $('next').onclick=()=>{if(Date.now()<lockT)return;if(!run.checked)return check();if(last){run.done=true;return render()}run.at++;run.pick=null;run.checked=false;render();scrollTo(0,0)};
+}
+function check(){
+  const q=run.list[run.at],ok=run.pick===q.a;run.checked=true;
+  const st=db.stat[q.t]||{ok:0,all:0};st.all++;if(ok)st.ok++;db.stat[q.t]=st;
+  if(ok){run.ok++;if(db.book[q.id]){db.book[q.id]++;if(db.book[q.id]>=3)delete db.book[q.id]}}
+  else{run.wrong.push(q);db.book[q.id]=1}
+  save();
+  document.querySelectorAll('.opt').forEach(b=>{const j=+b.dataset.j;if(j===q.a)b.classList.add('right');else if(j===run.pick)b.classList.add('wrong')});
+  $('case').insertAdjacentHTML('beforeend',`<span class="stampmark ${ok?'ok':'no'}">${ok?'破案':'再查'}</span>`);
+  $('why').innerHTML=`<div class="why ${ok?'ok':''}"><p><b>${ok?'答對了！':`正確答案是 ${'ABCD'[run.ord[run.at].indexOf(q.a)]}`}</b>　${esc(q.e)}</p><p class="lead">線索：${esc(R[q.t].clue)}</p><button type="button" class="seefile" data-file="${q.t}">看「${q.t}」檔案 →</button></div>`;
+  $('why').querySelector('[data-file]').onclick=e=>openFile(e.target.dataset.file);
+  lockT=Date.now()+600;paintBar();setTimeout(()=>{if(run&&run.checked)paintBar()},620);
+}
+function result(){
+  const n=run.list.length,p=n?run.ok/n:0;
+  const byT={};run.wrong.forEach(q=>byT[q.t]=(byT[q.t]||0)+1);
+  const weakest=Object.entries(byT).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
+  $('app').innerHTML=`<section class="result"><p class="lead">${run.label}・辦了 ${n} 個案件</p><div class="score">${run.ok} / ${n}</div>
+   <span class="seal ${p>=.8?'good':''}">${p===1?'全部破案！':p>=.8?'名偵探':'繼續查案'}</span>
+   <p>${p===1?'太厲害了！可以挑戰進階版。':weakest.length?`這次最常錯的是「${weakest.slice(0,2).join('」和「')}」，先去看它的檔案，再用錯題重辦練一次。`:''}</p>
+   ${run.wrong.length?`<div class="mlist">${run.wrong.map(q=>`<div class="mitem"><b>${q.t}</b>　${esc(q.s||q.ask)}<br><span class="lead">答案：${esc(q.o[q.a])}</span></div>`).join('')}</div>`:''}
+  </section>
+  <div class="row2">${weakest.length?`<button class="big alt" id="seeWeak" type="button">看「${weakest[0]}」檔案</button>`:''}<button class="big" id="home" type="button">回到偵探社</button></div>`;
+  $('home').onclick=()=>{run=null;setTab('home')};
+  if($('seeWeak'))$('seeWeak').onclick=()=>{run=null;openFile(weakest[0])};
+}
+render();
+</script>
+</body>
+</html>
