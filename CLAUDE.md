@@ -6,6 +6,7 @@
 
 ## 執行方式
 
+- 登入：`login.js` 讓首頁先輸入密碼（只存加鹽 SHA-256 雜湊），其他頁沒登入會導回首頁；新增頁面要在 `<title>` 後加 `<script src="login.js"></script>`。
 - 入口：`index.html`（階段選擇），直接用瀏覽器開啟。新增階段時複製 `final.html` 改資料，並在 `index.html` 加一張卡。
 - 線上版：GitHub Pages https://chiaoro.github.io/study-2026/ ，push 到 `main` 後自動更新。
 

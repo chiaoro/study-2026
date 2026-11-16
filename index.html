@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <title>六年級複習站</title>
+<script src="login.js" data-home="1"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
@@ -62,7 +63,7 @@ p{margin:0}
     <a class="term now" href="final.html">
       <span class="seal" aria-hidden="true">期末</span>
       <h2>六上期末</h2>
-      <p class="sub">國語第7～12課、英文 Unit 3–4，其他科陸續加入</p>
+      <p class="sub">國語、英文、社會、自然，健康陸續加入</p>
       <p class="row"><span class="tag">現在複習這個</span><span class="count" id="c-final"></span><span class="go">進入 →</span></p>
     </a>
     <a class="term" href="midterm.html">
@@ -72,13 +73,14 @@ p{margin:0}
       <p class="row"><span class="tag">已考完，可回顧</span><span class="count" id="c-mid"></span><span class="go">進入 →</span></p>
     </a>
   </nav>
-  <p class="foot">打勾紀錄存在這臺裝置的瀏覽器裡，請固定用同一個瀏覽器打開。</p>
+  <p class="foot">打勾紀錄存在這臺裝置的瀏覽器裡，請固定用同一個瀏覽器打開。<br><a href="#" id="logout" style="color:inherit">登出</a></p>
 </div>
 <script>
 // 顯示各階段已打勾幾項（讀不到紀錄就不顯示）
 [["c-final","final-done-r1"],["c-mid","hub-done-r2"]].forEach(([id,key])=>{
   try{const n=Object.keys(JSON.parse(localStorage.getItem(key))||{}).length;if(n)document.getElementById(id).textContent=`已打勾 ${n} 項`}catch(e){}
 });
+document.getElementById("logout").onclick=e=>{e.preventDefault();try{localStorage.removeItem("study-login-v1")}catch(err){}location.reload()};
 </script>
 </body>
 </html>
