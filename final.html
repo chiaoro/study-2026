@@ -169,9 +169,9 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--next);outline-offse
 <script>
 const SUBJECTS={
   chi:{name:"國語",sub:"第7～12課、學習地圖三、四"},
-  sci:{name:"自然",sub:"範圍待補"},
+  sci:{name:"自然",sub:"三、動物大解密；四、電磁作用"},
   hea:{name:"健康",sub:"範圍待補"},
-  soc:{name:"社會",sub:"範圍待補"},
+  soc:{name:"社會",sub:"第三單元 戰後經濟發展；第四單元 臺灣的城鄉與永續發展"},
   eng:{name:"英文",sub:"Unit 3 From Farm to Table、Unit 4 A Call in the Morning"}
 };
 const STAGES={
@@ -194,14 +194,26 @@ const ITEMS=[
    tags:["每句都能聽發音","單字卡","課本練習看答案","26 題小測驗（含聽力）"]},
   {id:"eng-vocab",stage:"extra",step:"背期末單字",tip:"先練「考試重點」，拼到全對再打勾",s:"eng",title:"六上英文期末單字",url:"https://chiaoro.github.io/study-2026/vocab-final.html",src:"Claude",
    units:[["範圍","Unit 3 食物、Unit 4 每天作息，加課文單字和發音字，共 63 個"],["練法","看中文拼英文、看英文選中文、聽發音拼字；錯的自動收進錯題本"]],
-   tags:["考試重點 22 字","聽發音","錯題本"]}];
+   tags:["考試重點 22 字","聽發音","錯題本"]},
+  {id:"sci-exam",stage:"quiz",s:"sci",title:"自然期末模擬段考",url:"https://claude.ai/artifact/5TtfZR8L1EdhA9JVAi8jbs",src:"Claude",
+   units:[["範圍","動物的運動與分類、呼吸與器官系統、仿生；指北針與地磁、電磁鐵、電磁波"],["考法","一般版、進階版各 50 題（是非、選擇、填空），整份寫完才交卷"]],
+   tags:["每次抽新題","錯題本","只重考錯題"]},
+  {id:"sci-ws",stage:"extra",step:"寫測驗券",tip:"看測驗券原頁，在答案卡作答，錯的要訂正",s:"sci",title:"自然期末測驗券",url:"https://claude.ai/artifact/BY8AT5VWpZroV7kF6JdLed",src:"Claude",
+   units:[["回次","第 10～15 回（單元練習）、第 16～18 回（期末評量）"]],
+   tags:["9 回","交卷批改","訂正錯題"]},
+  {id:"soc-exam",stage:"quiz",s:"soc",title:"社會期末模擬段考",url:"https://claude.ai/artifact/Q2TFPDYpUaZM4Whhwx2FyQ",src:"Claude",
+   units:[["範圍","土地改革、美援、加工出口區、十大建設、科學園區；工業化與都市化、生活圈、城鄉永續"],["考法","一般版、進階版各 50 題（是非、選擇、填空），整份寫完才交卷"]],
+   tags:["每次抽新題","錯題本","只重考錯題"]},
+  {id:"soc-ws",stage:"extra",step:"寫測驗券",tip:"看測驗券原頁，在答案卡作答，錯的要訂正",s:"soc",title:"社會期末測驗券",url:"https://claude.ai/artifact/2PXWYLBM4p8xGh9MXBE7K5",src:"Claude",
+   units:[["回次","第 8～14 回（單元練習）、第 17～18 回（期末評量）"]],
+   tags:["9 回","交卷批改","訂正錯題"]}];
 
 // 打勾紀錄存在這臺平板的瀏覽器裡（同一個瀏覽器、同一個網址打開就會一直在）
 const KEY="final-done-r1";
 let done={};try{done=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){}
 function saveDone(){try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}}
 // 題目版本：讓孩子一眼看出哪些題目是新的（new:true 才是這次換過的）
-const VER={"chi-rhetoric":["新增 1109",1],"eng-notes":["新增 1109",1],"eng-vocab":["新增 1109",1],"chi-notes":["新增 1109",1],"chi-write":["新增 1109",1]};
+const VER={"chi-rhetoric":["新增 1109",1],"eng-notes":["新增 1109",1],"eng-vocab":["新增 1109",1],"chi-notes":["新增 1109",1],"chi-write":["新增 1109",1],"sci-exam":["新增 1116",1],"sci-ws":["新增 1116",1],"soc-exam":["新增 1116",1],"soc-ws":["新增 1116",1]};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const bySubject=k=>ITEMS.filter(i=>i.s===k);
 const nextOf=k=>bySubject(k).find(i=>!done[i.id]);
