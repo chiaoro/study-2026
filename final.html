@@ -171,7 +171,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--next);outline-offse
 const SUBJECTS={
   chi:{name:"國語",sub:"第7～12課、學習地圖三、四"},
   sci:{name:"自然",sub:"三、動物大解密；四、電磁作用"},
-  hea:{name:"健康",sub:"人際溝通、聰明消費與用藥、青春期與性別尊重、身體界線與安全"},
+  hea:{name:"健康",sub:"範圍待補"},
   soc:{name:"社會",sub:"第三單元 戰後經濟發展；第四單元 臺灣的城鄉與永續發展"},
   eng:{name:"英文",sub:"Unit 3 From Farm to Table、Unit 4 A Call in the Morning"}
 };
@@ -225,29 +225,14 @@ const ITEMS=[
    tags:["每次抽新題","錯題本","只重考錯題"]},
   {id:"soc-ws",stage:"extra",step:"寫測驗券",tip:"一題一題作答，交卷後把錯的訂正好",s:"soc",title:"社會期末測驗券",url:"https://claude.ai/artifact/2PXWYLBM4p8xGh9MXBE7K5",src:"Claude",
    units:[["回次","第 8～14 回（單元練習）、第 17～18 回（期末評量）"]],
-   tags:["9 回 340 題","一題一題作答","訂正錯題"]},
-  {id:"chi-gpt",stage:"quiz",s:"chi",title:"國語期末互動測驗",url:"https://grade6-final-review-2026.surry318.chatgpt.site/chinese.html",src:"ChatGPT",
-   units:[["範圍","第 7～12 課，每份 35 題"]],
-   tags:["整份寫完才交卷","錯題再做一次"]},
-  {id:"eng-gpt",stage:"quiz",s:"eng",title:"英文期末互動測驗",url:"https://grade6-final-review-2026.surry318.chatgpt.site/english.html",src:"ChatGPT",
-   units:[["範圍","Unit 3、Unit 4，每份 35 題"]],
-   tags:["整份寫完才交卷","錯題再做一次"]},
-  {id:"sci-gpt",stage:"quiz",s:"sci",title:"自然期末互動測驗",url:"https://grade6-final-review-2026.surry318.chatgpt.site/science.html",src:"ChatGPT",
-   units:[["範圍","第三、四單元，每份 50 題"]],
-   tags:["整份寫完才交卷","錯題再做一次"]},
-  {id:"soc-gpt",stage:"quiz",s:"soc",title:"社會期末互動測驗",url:"https://grade6-final-review-2026.surry318.chatgpt.site/social.html",src:"ChatGPT",
-   units:[["範圍","第三、四單元，每份 50 題"]],
-   tags:["整份寫完才交卷","錯題再做一次"]},
-  {id:"hea-gpt",stage:"quiz",s:"hea",title:"健康期末互動測驗",url:"https://grade6-final-review-2026.surry318.chatgpt.site/health.html",src:"ChatGPT",
-   units:[["範圍","人際溝通、聰明消費與用藥、青春期與性別尊重、身體界線與安全"],["考法","期末綜合每份 20 題，單一主題每份 10 題"]],
-   tags:["整份寫完才交卷","重練錯題"]}];
+   tags:["9 回 340 題","一題一題作答","訂正錯題"]}];
 
 // 打勾紀錄存在這臺平板的瀏覽器裡（同一個瀏覽器、同一個網址打開就會一直在）
 const KEY="final-done-r1";
 let done={};try{done=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){}
 function saveDone(){try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}}
 // 題目版本：讓孩子一眼看出哪些題目是新的（new:true 才是這次換過的）
-const VER={"chi-rhetoric":["新增 1109",1],"eng-notes":["新增 1109",1],"eng-vocab":["新增 1109",1],"chi-notes":["新增 1109",1],"chi-write":["新增 1109",1],"sci-exam":["新增 1116",1],"sci-ws":["新增 1116",1],"soc-exam":["新增 1116",1],"soc-ws":["新增 1116",1],"sci-notes":["新增 1116",1],"soc-notes":["新增 1116",1],"chi-gpt":["新增 1119",1],"eng-gpt":["新增 1119",1],"sci-gpt":["新增 1119",1],"soc-gpt":["新增 1119",1],"hea-gpt":["新增 1119",1]};
+const VER={"chi-rhetoric":["新增 1109",1],"eng-notes":["新增 1109",1],"eng-vocab":["新增 1109",1],"chi-notes":["新增 1109",1],"chi-write":["新增 1109",1],"sci-exam":["新增 1116",1],"sci-ws":["新增 1116",1],"soc-exam":["新增 1116",1],"soc-ws":["新增 1116",1],"sci-notes":["新增 1116",1],"soc-notes":["新增 1116",1]};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const bySubject=k=>ITEMS.filter(i=>i.s===k);
 const nextOf=k=>bySubject(k).find(i=>!done[i.id]);
